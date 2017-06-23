@@ -37,6 +37,7 @@ setup(
     ],
     install_requires={
         'setuptools >= 18.5',
-        'click'
+        'click',
+        'future'
     }
 )

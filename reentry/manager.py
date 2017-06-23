@@ -1,4 +1,6 @@
 # -*- coding: utf8 -*-
+from future.utils import iteritems
+
 from reentry.jsonbackend import JsonBackend
 
 
@@ -57,9 +59,9 @@ def scan(groups=[], group_re=None):
         dist = dists[0]
         emap = dist.get_entry_map()
         if groups:
-            dmap = {k: v for k, v in emap.iteritems() if k in groups}
+            dmap = {k: v for k, v in iteritems(emap) if k in groups}
         elif group_re:
-            dmap = {k: v for k, v in emap.iteritems() if group_re.match(k)}
+            dmap = {k: v for k, v in iteritems(emap) if group_re.match(k)}
         else:
             dmap = emap
         dname = dist.project_name

@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
 import json
 
+from future.utils import iteritems
+
 from reentry.abcbackend import BackendInterface
 
 
@@ -48,7 +50,7 @@ class JsonBackend(BackendInterface):
         epmap.pop('setuptools.installation', None)
         epmap.pop('setuptools.file_finders', None)
         epmap.pop('egg_info.writers', None)
-        epmap = {k: {kk: str(vv) for kk, vv in v.iteritems()} for k, v in epmap.iteritems()}
+        epmap = {k: {kk: str(vv) for kk, vv in iteritems(v)} for k, v in iteritems(epmap)}
         '''update entry point storage
         --> only if there is something to update though'''
         if epmap:
@@ -74,7 +76,7 @@ class JsonBackend(BackendInterface):
         """
         from reentry.entrypoint import EntryPoint
         for dist in self.epmap:
-            for en, ep in self.epmap[dist].get(group, {}).iteritems():
+            for en, ep in iteritems(self.epmap[dist].get(group, {})):
                 yield EntryPoint.parse(ep)
 
     def get_pr_dist_map(self, dist):
@@ -185,7 +187,7 @@ class JsonBackend(BackendInterface):
         for g in group:
             if g in self.epmap[dist].keys():
                 gmap = {}
-                for n, e in self.epmap[dist][g].iteritems():
+                for n, e in iteritems(self.epmap[dist][g]):
                     if not name or any([re.match(i, n) for i in name]):
                         gmap[n] = EntryPoint.parse(e)
                 if gmap:
